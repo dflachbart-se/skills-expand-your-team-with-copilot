@@ -553,6 +553,21 @@ document.addEventListener("DOMContentLoaded", () => {
             .join("")}
         </ul>
       </div>
+      <div class="social-sharing">
+        <span class="share-label">Share:</span>
+        <button class="share-button" data-platform="twitter" data-activity="${name.replace(/"/g, '&quot;')}" data-description="${details.description.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}" data-schedule="${formattedSchedule.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}" title="Share on Twitter">
+          <span class="share-icon">🐦</span>
+        </button>
+        <button class="share-button" data-platform="facebook" data-activity="${name.replace(/"/g, '&quot;')}" title="Share on Facebook">
+          <span class="share-icon">📘</span>
+        </button>
+        <button class="share-button" data-platform="linkedin" data-activity="${name.replace(/"/g, '&quot;')}" title="Share on LinkedIn">
+          <span class="share-icon">💼</span>
+        </button>
+        <button class="share-button" data-platform="email" data-activity="${name.replace(/"/g, '&quot;')}" data-description="${details.description.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}" data-schedule="${formattedSchedule.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}" title="Share via Email">
+          <span class="share-icon">✉️</span>
+        </button>
+      </div>
       <div class="activity-card-actions">
         ${
           currentUser
@@ -588,7 +603,60 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // Add click handlers for social sharing buttons
+    const shareButtons = activityCard.querySelectorAll(".share-button");
+    shareButtons.forEach((button) => {
+      button.addEventListener("click", handleShare);
+    });
+
     activitiesList.appendChild(activityCard);
+  }
+
+  // Handle social sharing
+  function handleShare(event) {
+    const button = event.currentTarget;
+    const platform = button.dataset.platform;
+    const activityName = button.dataset.activity || '';
+    const description = button.dataset.description || '';
+    const schedule = button.dataset.schedule || '';
+
+    const url = window.location.href;
+    const text = `Check out ${activityName} at Mergington High School! ${description}`;
+    const emailSubject = `Join ${activityName} at Mergington High School`;
+    const emailBody = `Hi,\n\nI wanted to share this exciting activity with you:\n\n${activityName}\n${description}\n\nSchedule: ${schedule}\n\nCheck it out at: ${url}\n\nBest regards`;
+
+    let shareUrl;
+
+    switch (platform) {
+      case "twitter":
+        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          text
+        )}&url=${encodeURIComponent(url)}`;
+        break;
+      case "facebook":
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+          url
+        )}`;
+        break;
+      case "linkedin":
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+          url
+        )}`;
+        break;
+      case "email":
+        shareUrl = `mailto:?subject=${encodeURIComponent(
+          emailSubject
+        )}&body=${encodeURIComponent(emailBody)}`;
+        break;
+    }
+
+    if (shareUrl) {
+      if (platform === "email") {
+        window.location.href = shareUrl;
+      } else {
+        window.open(shareUrl, "_blank", "width=600,height=400");
+      }
+    }
   }
 
   // Event listeners for search and filter
