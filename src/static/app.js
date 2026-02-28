@@ -555,16 +555,16 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <div class="social-sharing">
         <span class="share-label">Share:</span>
-        <button class="share-button twitter" data-activity="${name}" data-description="${details.description.replace(/"/g, '&quot;')}" data-schedule="${formattedSchedule.replace(/"/g, '&quot;')}" title="Share on Twitter">
+        <button class="share-button" data-platform="twitter" data-activity="${name.replace(/"/g, '&quot;')}" data-description="${details.description.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}" data-schedule="${formattedSchedule.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}" title="Share on Twitter">
           <span class="share-icon">🐦</span>
         </button>
-        <button class="share-button facebook" data-activity="${name}" data-description="${details.description.replace(/"/g, '&quot;')}" title="Share on Facebook">
+        <button class="share-button" data-platform="facebook" data-activity="${name.replace(/"/g, '&quot;')}" title="Share on Facebook">
           <span class="share-icon">📘</span>
         </button>
-        <button class="share-button linkedin" data-activity="${name}" data-description="${details.description.replace(/"/g, '&quot;')}" title="Share on LinkedIn">
+        <button class="share-button" data-platform="linkedin" data-activity="${name.replace(/"/g, '&quot;')}" title="Share on LinkedIn">
           <span class="share-icon">💼</span>
         </button>
-        <button class="share-button email" data-activity="${name}" data-description="${details.description.replace(/"/g, '&quot;')}" data-schedule="${formattedSchedule.replace(/"/g, '&quot;')}" title="Share via Email">
+        <button class="share-button" data-platform="email" data-activity="${name.replace(/"/g, '&quot;')}" data-description="${details.description.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}" data-schedule="${formattedSchedule.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}" title="Share via Email">
           <span class="share-icon">✉️</span>
         </button>
       </div>
@@ -615,17 +615,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handle social sharing
   function handleShare(event) {
     const button = event.currentTarget;
-    const platform = button.classList.contains("twitter")
-      ? "twitter"
-      : button.classList.contains("facebook")
-      ? "facebook"
-      : button.classList.contains("linkedin")
-      ? "linkedin"
-      : "email";
-
-    const activityName = button.dataset.activity;
-    const description = button.dataset.description;
-    const schedule = button.dataset.schedule;
+    const platform = button.dataset.platform;
+    const activityName = button.dataset.activity || '';
+    const description = button.dataset.description || '';
+    const schedule = button.dataset.schedule || '';
 
     const url = window.location.href;
     const text = `Check out ${activityName} at Mergington High School! ${description}`;
@@ -658,7 +651,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (shareUrl) {
-      window.open(shareUrl, "_blank", "width=600,height=400");
+      if (platform === "email") {
+        window.location.href = shareUrl;
+      } else {
+        window.open(shareUrl, "_blank", "width=600,height=400");
+      }
     }
   }
 

@@ -303,22 +303,22 @@ section h3 {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.share-button.twitter:hover {
+.share-button[data-platform="twitter"]:hover {
   background: #1da1f2;
   border-color: #1da1f2;
 }
 
-.share-button.facebook:hover {
+.share-button[data-platform="facebook"]:hover {
   background: #1877f2;
   border-color: #1877f2;
 }
 
-.share-button.linkedin:hover {
+.share-button[data-platform="linkedin"]:hover {
   background: #0077b5;
   border-color: #0077b5;
 }
 
-.share-button.email:hover {
+.share-button[data-platform="email"]:hover {
   background: #ea4335;
   border-color: #ea4335;
 }
