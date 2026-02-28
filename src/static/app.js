@@ -421,12 +421,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentDifficulty) {
         queryParams.push(`difficulty=${encodeURIComponent(currentDifficulty)}`);
       }
-        } else if (range) {
-          // Add time parameters for before/after school
-          queryParams.push(`start_time=${encodeURIComponent(range.start)}`);
-          queryParams.push(`end_time=${encodeURIComponent(range.end)}`);
-        }
-      }
 
       const queryString =
         queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
